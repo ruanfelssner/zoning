@@ -1,0 +1,6 @@
+Flask==1.1.4
+shapely
+osm2geojson
+requests
+geojson
+flask-cors

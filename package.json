@@ -1,0 +1,28 @@
+{
+  "name": "smart-citizen-zoning-api",
+  "version": "1.0.0",
+  "description": "Ferramenta para mapeamento de areas geolocalizadas a nível mundo.",
+  "author": "Ruan Felssner <ruan_felssner@hotmail.com> (https://felss.dev/)",
+  "repository": {
+    "private": true
+  },
+  "main": "app.py",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "serverless wsgi serve",
+    "dev": "serverless deploy --stage dev",
+    "prod": "serverless deploy --stage prod",
+    "dev_delete": "serverless remove --stage dev",
+    "prod_delete": "serverless remove --stage prod",
+    "create_domain_dev": "serverless create_domain --stage dev",
+    "create_domain_prod": "serverless create_domain --stage prod",
+    "remove_domain_dev": "serverless delete_domain --stage dev",
+    "remove_domain_prod": "serverless delete_domain --stage prod",
+    "test-mapping": "serverless invoke -f api --stage dev --path data/mappingBlock.json"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^5.1.0",
+    "serverless-python-requirements": "^5.1.0",
+    "serverless-wsgi": "^1.7.6"
+  }
+}
