@@ -13,6 +13,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 
+
 def bbox(coord_list):
     box = []
     for i in (0,1):
@@ -70,6 +71,38 @@ def getQuadras(value):
 def hello_from_root():
     return jsonify(message='Hello from root!')
 
+@app.route("/merge", methods=['POST'])
+def mergPolygons():
+    data = request.json
+    shapes = []
+    geojson = {
+        "type": "FeatureCollection",
+        "features": []
+    }
+    for item in data:
+        geojson["features"].append({
+      "type": "Feature",
+      "properties": {},
+      "geometry": item
+    })
+    polygon = []
+    for feature in geojson['features']:
+        polygon.append(asShape(feature['geometry']))
+    
+    i = 0
+    polygonAtual = polygon[0]
+    while i < len(polygon):
+        polygonAtual = polygonAtual.union(polygon[i])
+        i+=1
+    
+    print()
+
+    return make_response(jsonify({
+            "type": "Feature",
+            "properties": {},
+            "geometry": mapping(polygonAtual)
+        }), 200)
+
 @app.route("/osmclear")
 def osmclear():
     return jsonify(0)
@@ -108,3 +141,7 @@ def mappingblock():
 @app.errorhandler(404)
 def resource_not_found(e):
     return make_response(jsonify(error='Not found!'), 404)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
